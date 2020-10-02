@@ -48,3 +48,18 @@ class MoviesDao:
             result.append(col_movies.find({"genres": [movie[genre]]}).limit(1))
 
         return result
+
+    @staticmethod
+    def get_tags_movie(movieId):
+        col_tabs = Connection.db()["tags"]
+        return col_tabs.find({"movieId": movieId})
+
+    @staticmethod
+    def get_categories(movieId):
+        col_tabs = Connection.db()["movies"]
+        return col_tabs.find_one({"movieId": movieId})["genres"]
+
+    @staticmethod
+    def get_movie_genre(genre):
+        col_movies = Connection.db()["movies"]
+        return col_movies.find_one({"genres": genre})

@@ -27,7 +27,7 @@ class Brain:
         sum_distance = sum([pow(database[user][item] - database[target][item], 2)
                             for item in database[user] if item in database[target]])
 
-        print("DISTANCIA: " + str(sum_distance))
+        # print("DISTANCIA: " + str(sum_distance))
 
         # RETORNA DISTANCIA EUCLIADIANA
         return 1 / (1 + sqrt(sum_distance))
@@ -79,14 +79,44 @@ class Brain:
         # RETORNA LISTA DE RECOMENDAÇÃO
         return rankings[0:30]
 
+    '''
     @staticmethod
-    def recommender_content(recommender_collaborative):
+    def recommender_content(database):
         result = []
 
-        for movie in recommender_collaborative:
-            result.append(MoviesDao.load_movies_category(movie))
+        for movie in database:
+            for movieFCB in MoviesDao.get_tags_movie(movie[1]):
+                print("MOVIE FCB: " + str(movieFCB))
+                item = MoviesDao.load_movie(movieFCB['movieId'])
+                print("Item: " + str(item))
+                if any(x[1] == item['movieId'] for x in database):
+                    continue
+
+                print("nessa avancou")
+                if item not in result:
+                    result.append(item)
+
+        print("DATABASE:" + str(database))
+        print("RESULT:" + str(result))
+        return result
+    '''
+
+    @staticmethod
+    def recommender_content(database):
+        result = []
+
+        for movie in database:
+            for genre in MoviesDao.get_categories(movie[1]):
+
+                item = MoviesDao.get_movie_genre(genre)
+                if any(x[1] == item['movieId'] for x in database):
+                    continue
+
+                if item not in result:
+                    result.append(item)
 
         return result
+
 
 
 

@@ -2,7 +2,7 @@ from logic.Brain import Brain
 from dao.MoviesDao import MoviesDao
 
 # RETORNA LISTA DE RECOMENDAÇÃO POR MEIO DA FILTRAGEM COLABORATIVA
-resultFC = Brain.recommender_collaborative(MoviesDao.load_data(), "5")
+resultFC = Brain.recommender_collaborative(MoviesDao.load_data(), "600")
 # print(resultFC)
 
 # EXIBE RESULTADOS DA FILTRAGEM COLABORATIVA
@@ -22,3 +22,5 @@ for movie in resultHybrid:
     print(movie['title'])
 
 print("\n-------------------- INICIO FILTRAGEM BASEADA EM CONTEÚDO ----------------------\n")
+
+

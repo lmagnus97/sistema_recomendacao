@@ -63,3 +63,16 @@ class MoviesDao:
     def get_movie_genre(genre):
         col_movies = Connection.db()["movies"]
         return col_movies.find_one({"genres": genre})
+
+    @staticmethod
+    def get_movies_links():
+        col_links = Connection.db()["links"]
+        return col_links.find()
+
+    @staticmethod
+    def get_all_movies():
+
+        # COLEÇÃO DE FILMES
+        col_movies = Connection.db()["movies"]
+
+        return col_movies.find()

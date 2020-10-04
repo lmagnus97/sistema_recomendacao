@@ -11,23 +11,21 @@ class Brain:
         common = {}
 
         # PERCORRE LISTA DE FILMES AVALIADOS PELO USUÁRIO
-        for item in database[user]:
+        for movie in database[user]:
 
             # VERIFICA SE O ALVO TAMBÉM AVALIOU ESTE FILME
-            if item in database[target]:
+            if movie in database[target]:
 
                 # IDENTIFICA QUE ESTE FILME É COMUM ENTRE OS DOIS
-                common[item] = 1
+                common[movie] = 1
 
         # SE NÃO EXISTE AVALIAÇÕES EM COMUM RETORNA
         if len(common) == 0:
             return 0
 
-        # SOMA DA DISTANCIA
+        # SOMA AS VARIÂNCIAS ENTRE AS NOTAS DO USUARIO E DO ALVO REFERENTE AO MESMO FILME ELEVADO AO QUADRADO
         sum_distance = sum([pow(database[user][item] - database[target][item], 2)
                             for item in database[user] if item in database[target]])
-
-        # print("DISTANCIA: " + str(sum_distance))
 
         # RETORNA DISTANCIA EUCLIADIANA
         return 1 / (1 + sqrt(sum_distance))

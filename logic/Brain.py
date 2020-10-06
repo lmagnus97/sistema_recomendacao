@@ -15,7 +15,6 @@ class Brain:
 
             # VERIFICA SE O ALVO TAMBÉM AVALIOU ESTE FILME
             if movie in database[target]:
-
                 # IDENTIFICA QUE ESTE FILME É COMUM ENTRE OS DOIS
                 common[movie] = 1
 
@@ -29,6 +28,43 @@ class Brain:
 
         # RETORNA DISTANCIA EUCLIADIANA
         return 1 / (1 + sqrt(sum_distance))
+
+    @staticmethod
+    def jaccard(item, database):
+
+        result = {}
+
+        for movie in database:
+
+            if movie == item:
+                continue
+
+            similar_genres = 0
+            item_genres = item["genres"]
+            sum_genres = len(item["genres"])
+
+            for genre in movie["genres"]:
+                if genre in item_genres:
+                    similar_genres += 1
+                else:
+                    sum_genres += 1
+
+            '''print("SIMILARIDADE ITEM " + item['title'] + " COM " + movie['title'] + " é: "
+                  + str(similar_genres / sum_genres))'''
+
+            result.setdefault(movie['movieId'], 0)
+            # print(movie['title'] + ": SIMILARES: " + str(similar_genres) + " SOMA: " + (str(sum_genres)))
+            result[movie['movieId']] += similar_genres / sum_genres
+
+        # GERA LISTA DE RECOMENDACAO
+        rankings = [(total, item) for item, total in result.items()]
+
+        # ORDENA LISTA
+        rankings.sort()
+        rankings.reverse()
+
+        # RETORNA LISTA DE RECOMENDAÇÃO
+        return rankings[0:10]
 
     @staticmethod
     def recommender_collaborative(database, user):
@@ -58,7 +94,6 @@ class Brain:
 
                 # VERIFICA SE O FILME JÁ NÃO FOI VISTO PELO USUÁRIO
                 if item not in database[user]:
-
                     # CALCULA O TOTAL
                     total.setdefault(item, 0)
                     total[item] += database[target][item] * similarity
@@ -75,7 +110,7 @@ class Brain:
         rankings.reverse()
 
         # RETORNA LISTA DE RECOMENDAÇÃO
-        return rankings[0:30]
+        return rankings[0:10]
 
     '''
     @staticmethod
@@ -114,7 +149,3 @@ class Brain:
                     result.append(item)
 
         return result
-
-
-
-

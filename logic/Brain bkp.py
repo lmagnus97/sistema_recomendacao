@@ -30,39 +30,30 @@ class Brain:
         return 1 / (1 + sqrt(sum_distance))
 
     @staticmethod
-    def jaccard(item, database, data_ratings):
+    def jaccard(item, database):
 
         result = {}
 
         for movie in database:
 
-            # IGNORA SE O FILME PERCORRIDO É IGUAL AO FILME ALVO
-            if movie['movieId'] == item['movieId']:
+            if movie == item:
                 continue
 
-            # IGNORA SE O FILME PERCORRIDO JÁ FOI AVALIADO PELO USUÁRIO
-            if any(x['movieId'] == movie['movieId'] for x in data_ratings):
-                continue
-
-            # SOMA OS GENEROS IGUAIS ENTRE O FILME PERCORRIDO E O FILEM ALVO
             similar_genres = 0
-
-            # SOMA O TOTAL DE GENEROS ENTRE OS 2 FILMES
+            item_genres = item["genres"]
             sum_genres = len(item["genres"])
 
-            # PERCORRE OS GENEROS DO FILME PERCORRIDO
             for genre in movie["genres"]:
-
-                # VERIFICA SE O GENERO DO FILME PERCORRIDO É IGUAL AO DO FILME ALVO
-                if genre in item["genres"]:
+                if genre in item_genres:
                     similar_genres += 1
                 else:
                     sum_genres += 1
 
-            # print("SIMILARIDADE ITEM " + item['title'] + " COM " + movie['title'] + " é: + str(similar_genres / sum_genres))
+            '''print("SIMILARIDADE ITEM " + item['title'] + " COM " + movie['title'] + " é: "
+                  + str(similar_genres / sum_genres))'''
 
-            # SETA O RESULTADO DA SIMILARIDADE DO FILME
             result.setdefault(movie['movieId'], 0)
+            # print(movie['title'] + ": SIMILARES: " + str(similar_genres) + " SOMA: " + (str(sum_genres)))
             result[movie['movieId']] += similar_genres / sum_genres
 
         # GERA LISTA DE RECOMENDACAO
@@ -73,7 +64,7 @@ class Brain:
         rankings.reverse()
 
         # RETORNA LISTA DE RECOMENDAÇÃO
-        return rankings[0:2]
+        return rankings[0:10]
 
     @staticmethod
     def recommender_collaborative(database, user):
@@ -121,40 +112,40 @@ class Brain:
         # RETORNA LISTA DE RECOMENDAÇÃO
         return rankings[0:10]
 
+    '''
     @staticmethod
     def recommender_content(database):
+        result = []
 
         for movie in database:
-            # CARREGA DADOS DO FILME
-            data_movie = MoviesDao.get_movie(movie[1])
+            for movieFCB in MoviesDao.get_tags_movie(movie[1]):
+                print("MOVIE FCB: " + str(movieFCB))
+                item = MoviesDao.load_movie(movieFCB['movieId'])
+                print("Item: " + str(item))
+                if any(x[1] == item['movieId'] for x in database):
+                    continue
 
-            # CARREGA LISTA DOS FILMES QUE CONTENHAM AO MENOS UMA CATEGORIA IGUAL AO FILME EM QUESTÃO
-            data_movies = MoviesDao.get_all_movies_per_genre(data_movie['genres'])
+                print("nessa avancou")
+                if item not in result:
+                    result.append(item)
 
-            # CARREGA AVALIACOES JÁ REALIZADAS PELO USUÁRIO
-            data_ratings = MoviesDao.get_user_ratings('600')
+        print("DATABASE:" + str(database))
+        print("RESULT:" + str(result))
+        return result
+    '''
 
-            # REALIZA CALCULO DA SIMILARIDADE
-            data_similar = Brain.jaccard(data_movie, data_movies, data_ratings)
+    @staticmethod
+    def recommender_content(database):
+        result = []
 
-            print(data_movie['title'] + ": " + str(movie[0]))
+        for movie in database:
+            for genre in MoviesDao.get_categories(movie[1]):
 
-            # CALCULA POSSIVEL NOTA
-            for item in data_similar:
-                new_rating = float(movie[0]) * float(item[0])
-                result_movie = MoviesDao.get_movie(item[1])
+                item = MoviesDao.get_movie_genre(genre)
+                if any(x[1] == item['movieId'] for x in database):
+                    continue
 
-                print("=============> " + result_movie['title'] + ": " + str(new_rating))
+                if item not in result:
+                    result.append(item)
 
-            print()
-
-
-
-            '''rating_a = float(MoviesDao.get_rating(data_similar[0][1])['rating'])
-            rating_b = float(MoviesDao.get_rating(data_similar[1][1])['rating'])
-
-            pred_divider = (float(data_similar[0][0]) * rating_a) + (float(data_similar[1][0]) * rating_b)
-            pred_dividend = (data_similar[0][0] + data_similar[1][0])
-            print("NOTA QUE DARIA PARA " + data_movie['title'] + ": " + str(pred_divider / pred_dividend))'''
-
-            # print(data_movie['title'] + " -> " + str(data_similar))
+        return result

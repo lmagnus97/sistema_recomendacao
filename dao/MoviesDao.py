@@ -6,11 +6,11 @@ from util.Util import Util
 class MoviesDao:
 
     @staticmethod
-    def load_data():
+    def get_movies():
         # COLEÇÃO DE AVALIAÇÕES
         col_ratings = Connection.db()["ratings"]
 
-        #COLEÇÃO DE FILMES
+        # COLEÇÃO DE FILMES
         col_movies = Connection.db()["movies"]
 
         # INICIA A BASE DE FILMES
@@ -32,22 +32,12 @@ class MoviesDao:
         return base_ratings
 
     @staticmethod
-    def load_movie(movie_id):
+    def get_movie(movie_id):
 
         # COLEÇÃO DE FILMES
         col_movies = Connection.db()["movies"]
 
         return col_movies.find_one({"movieId": movie_id})
-
-    @staticmethod
-    def load_movies_category(movie):
-        col_movies = Connection.db()["movies"]
-        result = []
-
-        for genre in movie["genre"]:
-            result.append(col_movies.find({"genres": [movie[genre]]}).limit(1))
-
-        return result
 
     @staticmethod
     def get_tags_movie(movieId):
@@ -78,9 +68,25 @@ class MoviesDao:
         return col_movies.find()
 
     @staticmethod
+    def get_rating(movie_id):
+
+        # COLEÇÃO DE FILMES
+        col_movies = Connection.db()["ratings"]
+
+        return col_movies.find_one({"movieId": movie_id})
+
+    @staticmethod
     def get_all_movies_per_genre(genres):
 
         # COLEÇÃO DE FILMES
         col_movies = Connection.db()["movies"]
 
         return col_movies.find({"genres": {"$" "in": genres}})
+
+    @staticmethod
+    def get_user_ratings(user_id):
+
+        # COLEÇÃO DE AVALIAÇÕES DO USUARIO
+        col_movies = Connection.db()["ratings"]
+
+        return col_movies.find({"userId": user_id})

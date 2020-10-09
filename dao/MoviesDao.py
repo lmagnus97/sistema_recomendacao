@@ -7,6 +7,7 @@ class MoviesDao:
 
     @staticmethod
     def get_movies():
+
         # COLEÇÃO DE AVALIAÇÕES
         col_ratings = Connection.db()["ratings"]
 
@@ -20,15 +21,16 @@ class MoviesDao:
 
         # INICIA A BASE DE AVALIACOES
         base_ratings = {}
+
         for data in col_ratings.find():
 
-            # FILTRA AS AVALIACOES PELO CONTEXTO(SE É FIM DE SEMANA OU NÃO)
+            # APLICAÇÃO DO CONTEXTO -> FILTRA AS AVALIACOES PELO CONTEXTO(SE É FIM DE SEMANA OU NÃO)
             if not Util.is_context_dayweek(datetime.fromtimestamp(float(data['timestamp'])).weekday()):
                 continue
 
             base_ratings.setdefault(data['userId'], {})
-            # PELO NOME: base_ratings[data['userId']][base_movies[data['movieId']]] = float(data['rating'])
             base_ratings[data['userId']][data['movieId']] = float(data['rating'])
+
         return base_ratings
 
     @staticmethod

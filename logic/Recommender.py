@@ -21,7 +21,7 @@ class Recommender:
 
             # LOG
             if similarity > 0:
-                print("A SIMILARIDADE DE " + user + " COM " + target + " É: " + str(similarity))
+                '''print("A SIMILARIDADE DE " + user + " COM " + target + " É: " + str(similarity))'''
 
             # SE SIMILARIDADE FOR MENOR QUE 0 PULA
             if similarity <= 0:
@@ -31,14 +31,14 @@ class Recommender:
             for item in database[target]:
 
                 # VERIFICA SE O FILME JÁ NÃO FOI VISTO PELO USUÁRIO
-                if item not in database[user]:
-                    # CALCULA O TOTAL
-                    total.setdefault(item, 0)
-                    total[item] += database[target][item] * similarity
+                '''if item not in database[user]:'''
+                # CALCULA O TOTAL
+                total.setdefault(item, 0)
+                total[item] += database[target][item] * similarity
 
-                    # CALCULA A SOMA DA SIMILARIDADE
-                    sum_similarity.setdefault(item, 0)
-                    sum_similarity[item] += similarity
+                # CALCULA A SOMA DA SIMILARIDADE
+                sum_similarity.setdefault(item, 0)
+                sum_similarity[item] += similarity
 
         # GERA LISTA DE RECOMENDACAO
         rankings = [(total / sum_similarity[item], item) for item, total in total.items()]
@@ -54,7 +54,7 @@ class Recommender:
     def recommender_content(database, data_ratings, fbc_number):
 
         total = {}
-
+        print("O TAMHNO DA LISTA É: " + str(len(database)))
         for movie in database:
             # CARREGA DADOS DO FILME
             data_movie = MoviesDao.get_movie(movie[1])

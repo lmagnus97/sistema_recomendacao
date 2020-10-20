@@ -65,7 +65,7 @@ class Recommender:
             # REALIZA CALCULO DA SIMILARIDADE
             data_similar = Calculations.jaccard(data_movie, data_movies, data_ratings, fbc_number)
 
-            print(data_movie['title'] + ": " + str(movie[0]))
+            # print(data_movie['title'] + ": " + str(movie[0]))
 
             # CALCULA POSSIVEL NOTA
             for item in data_similar:
@@ -74,14 +74,14 @@ class Recommender:
                     continue
 
                 new_rating = float(movie[0]) * float(item[0])
-                result_movie = MoviesDao.get_movie(item[1])
+                # result_movie = MoviesDao.get_movie(item[1])
 
                 total.setdefault(item[1], 0)
                 total[item[1]] += new_rating
 
-                print("=============> " + result_movie['title'] + ": " + str(new_rating))
+                # print("=============> " + result_movie['title'] + ": " + str(new_rating))
 
-            print()
+            # print()
 
         rankings = [(total, item) for item, total in total.items()]
         return rankings

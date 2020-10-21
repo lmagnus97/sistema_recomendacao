@@ -51,11 +51,11 @@ class Recommender:
         return rankings[0:fc_number]
 
     @staticmethod
-    def recommender_content(database_result, user_ratings, fbc_number):
+    def recommender_content(database, data_ratings, fbc_number):
 
         total = {}
-        print("O TAMHNO DA LISTA É: " + str(len(database_result)))
-        for movie in database_result:
+        print("O TAMHNO DA LISTA É: " + str(len(database)))
+        for movie in database:
 
             # CARREGA DADOS DO FILME
             data_movie = MoviesDao.get_movie(movie[1])
@@ -64,7 +64,7 @@ class Recommender:
             data_movies = MoviesDao.get_all_movies_per_genre(data_movie['genres'])
 
             # REALIZA CALCULO DA SIMILARIDADE
-            data_similar = Calculations.jaccard(data_movie, data_movies, user_ratings, fbc_number)
+            data_similar = Calculations.jaccard(data_movie, data_movies, data_ratings, fbc_number)
 
             # print(data_movie['title'] + ": " + str(movie[0]))
 

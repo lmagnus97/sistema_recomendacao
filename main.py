@@ -5,20 +5,20 @@ import math
 
 # PADROES
 USER_ID = '104'
-FC_NUMBER = 2000
+FC_NUMBER = 100
 FBC_NUMBER = 2
 
 # RETORNA LISTA DE RECOMENDAÇÃO POR MEIO DA FILTRAGEM COLABORATIVA
 
-# resultFC = Recommender.recommender_collaborative(database, USER_ID, FC_NUMBER)
-
 print("SEM CONTEXTO")
 database = MoviesDao.get_movies(False)
-Avalations.realize_avaliation(database, 8000)
+Avalations.realize_avaliation(database, 1000)
 
 print("COM CONTEXTO")
 database = MoviesDao.get_movies(True)
-Avalations.realize_avaliation(database, 8000)
+Avalations.realize_avaliation(database, 1000)
+
+resultFC = Recommender.recommender_collaborative(database, USER_ID, FC_NUMBER)
 
 # EXIBE RESULTADOS DA FILTRAGEM COLABORATIVA
 print("\n-------------------- INICIO FILTRAGEM COLABORATIVA ----------------------")

@@ -4,16 +4,16 @@ from math import sqrt
 class Calculations:
 
     @staticmethod
-    def euclidean(database, user, target):
+    def euclidean(database, user_id, user_other_id):
 
         # FILMES EM COMUM
         common = {}
 
         # PERCORRE LISTA DE FILMES AVALIADOS PELO USUÁRIO
-        for movie in database[user]:
+        for movie in database[user_id]:
 
             # VERIFICA SE O ALVO TAMBÉM AVALIOU ESTE FILME
-            if movie in database[target]:
+            if movie in database[user_other_id]:
                 # IDENTIFICA QUE ESTE FILME É COMUM ENTRE OS DOIS
                 common[movie] = 1
 
@@ -22,8 +22,8 @@ class Calculations:
             return 0
 
         # SOMA AS VARIÂNCIAS ENTRE AS NOTAS DO USUARIO E DO ALVO REFERENTE AO MESMO FILME ELEVADO AO QUADRADO
-        sum_distance = sum([pow(database[user][item] - database[target][item], 2)
-                            for item in database[user] if item in database[target]])
+        sum_distance = sum([pow(database[user_id][item] - database[user_other_id][item], 2)
+                            for item in database[user_id] if item in database[user_other_id]])
 
         # RETORNA DISTANCIA EUCLIADIANA
         return 1 / (1 + sqrt(sum_distance))

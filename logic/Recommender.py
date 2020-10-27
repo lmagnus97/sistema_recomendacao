@@ -1,11 +1,12 @@
 from dao.MoviesDao import MoviesDao
 from logic.Calculations import Calculations
+import copy
 
 
 class Recommender:
 
     @staticmethod
-    def recommender_collaborative(database, user, fc_number):
+    def recommender_collaborative(database, user_id, fc_number):
         total = {}
         sum_similarity = {}
 
@@ -13,15 +14,15 @@ class Recommender:
         for target in database:
 
             # SE USUARIO FOR ELE MESMO, PULA
-            if target == user:
+            if target == user_id:
                 continue
 
             # CALCULA SIMILARIDADE
-            similarity = Calculations.euclidean(database, user, target)
+            similarity = Calculations.euclidean(database, user_id, target)
 
             # LOG
             if similarity > 0:
-                '''print("A SIMILARIDADE DE " + user + " COM " + target + " É: " + str(similarity))'''
+                '''print("A SIMILARIDADE DE " + str(user_id) + " COM " + target + " É: " + str(similarity))'''
 
             # SE SIMILARIDADE FOR MENOR QUE 0 PULA
             if similarity <= 0:
@@ -48,7 +49,7 @@ class Recommender:
         rankings.reverse()
 
         # RETORNA LISTA DE RECOMENDAÇÃO
-        return rankings[0:fc_number]
+        return rankings
 
     @staticmethod
     def recommender_content(database_result, user_ratings, fbc_number):

@@ -5,18 +5,18 @@ import math
 
 # PADROES
 USER_ID = '104'
-FC_NUMBER = 100
+FC_NUMBER = 1000
 FBC_NUMBER = 2
 
 # RETORNA LISTA DE RECOMENDAÇÃO POR MEIO DA FILTRAGEM COLABORATIVA
 
-print("SEM CONTEXTO")
+'''print("SEM CONTEXTO")
 database = MoviesDao.get_movies(False)
-Avalations.realize_avaliation(database, 1000)
+Avalations.realize_avaliation(database, FC_NUMBER, False)'''
 
 print("COM CONTEXTO")
 database = MoviesDao.get_movies(True)
-Avalations.realize_avaliation(database, 1000)
+# Avalations.realize_avaliation(database, FC_NUMBER, False)
 
 resultFC = Recommender.recommender_collaborative(database, USER_ID, FC_NUMBER)
 
@@ -39,18 +39,16 @@ print("-------------------- FIM FILTRAGEM COLABORATIVA ----------------------\n"
 print("\n-------------------- INICIO FILTRAGEM BASEADA EM CONTEÚDO ----------------------\n")
 
 # CARREGA AVALIACOES JÁ REALIZADAS PELO USUÁRIO
-data_ratings = MoviesDao.get_user_ratings(USER_ID)
+# data_ratings = MoviesDao.get_user_ratings(USER_ID)
 
 # REALIZA RECOMENDAÇÃO BASEADA EM CONTEÚDO A PARTIR DA FILTRAGEM COLABORATIVA
-resultFBC = Recommender.recommender_content(resultFC, data_ratings, FBC_NUMBER)
+
 
 '''for movie in resultFBC:
     print(MoviesDao.get_movie(movie[1])['title'] + ": " + str(movie[0]))'''
 
-resultFC.extend(resultFBC)
+# print(str(resultFC))
 
-print(str(resultFC))
-
-Avalations.realize_avaliation(database, resultFC)
+Avalations.realize_avaliation(database, FC_NUMBER, True)
 
 print("\n-------------------- INICIO FILTRAGEM BASEADA EM CONTEÚDO ----------------------\n")

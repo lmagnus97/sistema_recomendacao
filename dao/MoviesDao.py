@@ -27,8 +27,8 @@ class MoviesDao:
             base_ratings.setdefault(data['userId'], {})
 
             # APLICAÇÃO DO CONTEXTO -> FILTRA AS AVALIACOES PELO CONTEXTO(SE É FIM DE SEMANA OU NÃO)
-            if with_context and not Util.is_context_dayweek(datetime.fromtimestamp(float(data['timestamp'])).weekday()):
-                continue
+            '''if with_context and not Util.is_context_dayweek(datetime.fromtimestamp(float(data['timestamp'])).weekday()):
+                continue'''
 
             base_ratings[data['userId']][data['movieId']] = float(data['rating'])
 

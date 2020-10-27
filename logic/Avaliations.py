@@ -20,7 +20,7 @@ class Avalations:
         sum_fc_mse_total = 0
         count_fc_avaliation = 0
 
-        for user_id in range(1, 2):
+        for user_id in range(1, 10):
             print(str(user_id))
             resultFC = Recommender.recommender_collaborative(database_movies, str(user_id), FC_NUMBER)
             resultHybrid = resultFC[0:1000]

@@ -20,7 +20,7 @@ class Avalations:
         sum_fc_mse_total = 0
         count_fc_avaliation = 0
 
-        for user_id in range(1, 10):
+        for user_id in range(1, 4):
             print(str(user_id))
             resultFC = Recommender.recommender_collaborative(database_movies, str(user_id), FC_NUMBER)
             resultHybrid = resultFC[0:1000]
@@ -37,7 +37,6 @@ class Avalations:
             for item in resultHybrid:
                 if item not in resultFCFinal:
                     dataInFC = [aux for aux in resultFC if aux[1] == item[1]]
-                    print(str(dataInFC))
                     try:
                         resultFCFinal.append(dataInFC[0])
                     except:
@@ -62,7 +61,6 @@ class Avalations:
                 if movie[1] in database_movies[str(user_id)]:
                     # RMSE
                     sum_hyb_dif_rsme += pow(database_movies[str(user_id)][movie[1]] - movie[0], 2)
-                    print("sum_hyb_dif_rsme: " + str(sum_hyb_dif_rsme))
 
                     # MAE
                     sum_hyb_mae += abs(database_movies[str(user_id)][movie[1]] - movie[0])

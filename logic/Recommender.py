@@ -1,24 +1,25 @@
 from dao.MoviesDao import MoviesDao
 from logic.Calculations import Calculations
+from db.Connection import Connection
 import copy
 
 
 class Recommender:
 
     @staticmethod
-    def recommender_collaborative(database, user_id, fc_number):
+    def recommender_collaborative(database_ratings, user_id, fc_number):
         total = {}
         sum_similarity = {}
 
         # PERCORRE A LISTA DE AVALIACOES
-        for target in database:
+        for target in database_ratings:
 
             # SE USUARIO FOR ELE MESMO, PULA
             if target == user_id:
                 continue
 
             # CALCULA SIMILARIDADE
-            similarity = Calculations.euclidean(database, user_id, target)
+            similarity = Calculations.euclidean(database_ratings, user_id, target)
 
             # LOG
             if similarity > 0:
@@ -29,20 +30,24 @@ class Recommender:
                 continue
 
             # PERCORRE A LISTA DE FILMES AVALIADOS PELO ALVO
-            for item in database[target]:
+            for item in database_ratings[target]:
 
                 # VERIFICA SE O FILME JÁ NÃO FOI VISTO PELO USUÁRIO
                 '''if item not in database[user]:'''
+
                 # CALCULA O TOTAL
                 total.setdefault(item, 0)
-                total[item] += database[target][item] * similarity
+                total[item] += database_ratings[target][item] * similarity
 
                 # CALCULA A SOMA DA SIMILARIDADE
                 sum_similarity.setdefault(item, 0)
                 sum_similarity[item] += similarity
 
+        # PEGA BASE DE FILMES
+        base_movies = MoviesDao.get_all_movies_genres()
+
         # GERA LISTA DE RECOMENDACAO
-        rankings = [(total / sum_similarity[item], item) for item, total in total.items()]
+        rankings = [(total / sum_similarity[item], item, base_movies[item][0], base_movies[item][1]) for item, total in total.items()]
 
         # ORDENA LISTA
         rankings.sort()
@@ -55,19 +60,12 @@ class Recommender:
     def recommender_content(database_result, user_ratings, fbc_number):
 
         total = {}
-        print("O TAMHNO DA LISTA É: " + str(len(database_result)))
+        data_movies = list(MoviesDao.get_all_movies())
+
         for movie in database_result:
 
-            # CARREGA DADOS DO FILME
-            data_movie = MoviesDao.get_movie(movie[1])
-
-            # CARREGA LISTA DOS FILMES QUE CONTENHAM AO MENOS UMA CATEGORIA IGUAL AO FILME EM QUESTÃO
-            data_movies = MoviesDao.get_all_movies_per_genre(data_movie['genres'])
-
             # REALIZA CALCULO DA SIMILARIDADE
-            data_similar = Calculations.jaccard(data_movie, data_movies, user_ratings, fbc_number)
-
-            # print(data_movie['title'] + ": " + str(movie[0]))
+            data_similar = Calculations.jaccard(movie, data_movies, user_ratings, fbc_number)
 
             # CALCULA POSSIVEL NOTA
             for item in data_similar:
@@ -76,14 +74,9 @@ class Recommender:
                     continue
 
                 new_rating = float(movie[0]) * float(item[0])
-                # result_movie = MoviesDao.get_movie(item[1])
 
                 total.setdefault(item[1], 0)
                 total[item[1]] += new_rating
-
-                # print("=============> " + result_movie['title'] + ": " + str(new_rating))
-
-            # print()
 
         rankings = [(total, item) for item, total in total.items()]
         return rankings

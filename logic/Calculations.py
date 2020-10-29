@@ -29,14 +29,14 @@ class Calculations:
         return 1 / (1 + sqrt(sum_distance))
 
     @staticmethod
-    def jaccard(item, database, data_ratings, fbc_number):
+    def jaccard(item, data_movies, data_ratings, fbc_number):
 
         result = {}
 
-        for movie in database:
+        for movie in data_movies:
 
             # IGNORA SE O FILME PERCORRIDO É IGUAL AO FILME ALVO
-            if movie['movieId'] == item['movieId']:
+            if movie['movieId'] == item[1]:
                 continue
 
             # IGNORA SE O FILME PERCORRIDO JÁ FOI AVALIADO PELO USUÁRIO
@@ -44,25 +44,30 @@ class Calculations:
                 continue
 
             # SOMA OS GENEROS IGUAIS ENTRE O FILME PERCORRIDO E O FILEM ALVO
-            similar_genres = 0
+            similar_count = 0
 
             # SOMA O TOTAL DE GENEROS ENTRE OS 2 FILMES
-            sum_genres = len(item["genres"])
+            total_count = len(item[2])
 
             # PERCORRE OS GENEROS DO FILME PERCORRIDO
-            for genre in movie["genres"]:
+            for genre in movie['genres']:
 
                 # VERIFICA SE O GENERO DO FILME PERCORRIDO É IGUAL AO DO FILME ALVO
-                if genre in item["genres"]:
-                    similar_genres += 1
+                if genre in item[2]:
+                    similar_count += 1
                 else:
-                    sum_genres += 1
+                    total_count += 1
 
-            # print("SIMILARIDADE ITEM " + item['title'] + " COM " + movie['title'] + " é: + str(similar_genres / sum_genres))
+            if str(item[3]).isnumeric() and str(movie['year']).isnumeric():
+
+                total_count += 1
+                dif_years = int(item[3]) - int(movie['year'])
+                if -5 < dif_years < 5:
+                    similar_count += 1
 
             # SETA O RESULTADO DA SIMILARIDADE DO FILME
             result.setdefault(movie['movieId'], 0)
-            result[movie['movieId']] += similar_genres / sum_genres
+            result[movie['movieId']] += similar_count / total_count
 
         # GERA LISTA DE RECOMENDACAO
         rankings = [(total, item) for item, total in result.items()]

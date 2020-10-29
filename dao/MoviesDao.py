@@ -11,19 +11,10 @@ class MoviesDao:
         # COLEÇÃO DE AVALIAÇÕES
         col_ratings = Connection.db()["ratings"]
 
-        # COLEÇÃO DE FILMES
-        col_movies = Connection.db()["movies"]
-
-        # INICIA A BASE DE FILMES
-        base_movies = {}
-        for data in col_movies.find():
-            base_movies[data['movieId']] = data['title']
-
         # INICIA A BASE DE AVALIACOES
         base_ratings = {}
 
         for data in col_ratings.find():
-
             base_ratings.setdefault(data['userId'], {})
 
             # APLICAÇÃO DO CONTEXTO -> FILTRA AS AVALIACOES PELO CONTEXTO(SE É FIM DE SEMANA OU NÃO)
@@ -36,7 +27,6 @@ class MoviesDao:
 
     @staticmethod
     def get_movie(movie_id):
-
         # COLEÇÃO DE FILMES
         col_movies = Connection.db()["movies"]
 
@@ -63,16 +53,24 @@ class MoviesDao:
         return col_links.find()
 
     @staticmethod
+    def get_all_movies_genres():
+
+        col_movies = Connection.db()["movies"]
+        base_movies = {}
+
+        for data in col_movies.find():
+            base_movies[data['movieId']] = (data['genres'], data['year'])
+
+        return base_movies
+
+    @staticmethod
     def get_all_movies():
 
-        # COLEÇÃO DE FILMES
         col_movies = Connection.db()["movies"]
-
         return col_movies.find()
 
     @staticmethod
     def get_rating(movie_id):
-
         # COLEÇÃO DE FILMES
         col_movies = Connection.db()["ratings"]
 
@@ -80,7 +78,6 @@ class MoviesDao:
 
     @staticmethod
     def get_all_movies_per_genre(genres):
-
         # COLEÇÃO DE FILMES
         col_movies = Connection.db()["movies"]
 
@@ -88,7 +85,6 @@ class MoviesDao:
 
     @staticmethod
     def get_user_ratings(user_id):
-
         # COLEÇÃO DE AVALIAÇÕES DO USUARIO
         col_movies = Connection.db()["ratings"]
 

@@ -5,7 +5,7 @@ import math
 
 # PADROES
 USER_ID = '104'
-FC_NUMBER = 100
+FC_NUMBER = 1000
 FBC_NUMBER = 2
 
 # RETORNA LISTA DE RECOMENDAÇÃO POR MEIO DA FILTRAGEM COLABORATIVA
@@ -49,6 +49,6 @@ print("\n-------------------- INICIO FILTRAGEM BASEADA EM CONTEÚDO ------------
 
 # print(str(resultFC))
 
-Avalations.realize_avaliation(database, FC_NUMBER, True)
+Avalations.realize_avaliation(database, FC_NUMBER)
 
 print("\n-------------------- INICIO FILTRAGEM BASEADA EM CONTEÚDO ----------------------\n")

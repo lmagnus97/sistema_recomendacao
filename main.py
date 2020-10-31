@@ -15,10 +15,10 @@ database = MoviesDao.get_movies(False)
 Avalations.realize_avaliation(database, FC_NUMBER, False)'''
 
 print("COM CONTEXTO")
-database = MoviesDao.get_movies(True)
+database_ratings = MoviesDao.get_movies(False)
 # Avalations.realize_avaliation(database, FC_NUMBER, False)
 
-resultFC = Recommender.recommender_collaborative(database, USER_ID, FC_NUMBER)
+# resultFC = Recommender.recommender_collaborative(database, USER_ID, FC_NUMBER)
 
 # EXIBE RESULTADOS DA FILTRAGEM COLABORATIVA
 print("\n-------------------- INICIO FILTRAGEM COLABORATIVA ----------------------")
@@ -49,6 +49,6 @@ print("\n-------------------- INICIO FILTRAGEM BASEADA EM CONTEÚDO ------------
 
 # print(str(resultFC))
 
-Avalations.realize_avaliation(database, FC_NUMBER)
+Avalations.realize_avaliation(database_ratings, FC_NUMBER, FBC_NUMBER)
 
 print("\n-------------------- INICIO FILTRAGEM BASEADA EM CONTEÚDO ----------------------\n")

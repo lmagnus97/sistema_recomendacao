@@ -4,16 +4,16 @@ from math import sqrt
 class Calculations:
 
     @staticmethod
-    def euclidean(database, user_id, user_other_id):
+    def euclidean(database_ratings, user_id, user_other_id):
 
         # FILMES EM COMUM
         common = {}
 
         # PERCORRE LISTA DE FILMES AVALIADOS PELO USUÁRIO
-        for movie in database[user_id]:
+        for movie in database_ratings[user_id]:
 
             # VERIFICA SE O ALVO TAMBÉM AVALIOU ESTE FILME
-            if movie in database[user_other_id]:
+            if movie in database_ratings[user_other_id]:
                 # IDENTIFICA QUE ESTE FILME É COMUM ENTRE OS DOIS
                 common[movie] = 1
 
@@ -22,8 +22,33 @@ class Calculations:
             return 0
 
         # SOMA AS VARIÂNCIAS ENTRE AS NOTAS DO USUARIO E DO ALVO REFERENTE AO MESMO FILME ELEVADO AO QUADRADO
-        sum_distance = sum([pow(database[user_id][item] - database[user_other_id][item], 2)
-                            for item in database[user_id] if item in database[user_other_id]])
+        sum_distance = sum([pow(database_ratings[user_id][item] - database_ratings[user_other_id][item], 2)
+                            for item in database_ratings[user_id] if item in database_ratings[user_other_id]])
+
+        # RETORNA DISTANCIA EUCLIADIANA
+        return 1 / (1 + sqrt(sum_distance))
+
+    @staticmethod
+    def euclidean2(database_ratings, user_id, user_other_id):
+
+        # FILMES EM COMUM
+        common = {}
+
+        # PERCORRE LISTA DE FILMES AVALIADOS PELO USUÁRIO
+        for movie in database_ratings:
+
+            # VERIFICA SE O ALVO TAMBÉM AVALIOU ESTE FILME
+            if movie in user_other_id:
+                # IDENTIFICA QUE ESTE FILME É COMUM ENTRE OS DOIS
+                common[movie] = 1
+
+        # SE NÃO EXISTE AVALIAÇÕES EM COMUM RETORNA
+        if len(common) == 0:
+            return 0
+
+        # SOMA AS VARIÂNCIAS ENTRE AS NOTAS DO USUARIO E DO ALVO REFERENTE AO MESMO FILME ELEVADO AO QUADRADO
+        sum_distance = sum([pow(database_ratings[item] - user_other_id[item], 2)
+                            for item in database_ratings if item in user_other_id])
 
         # RETORNA DISTANCIA EUCLIADIANA
         return 1 / (1 + sqrt(sum_distance))
@@ -58,12 +83,12 @@ class Calculations:
                 else:
                     total_count += 1
 
-            if str(item[3]).isnumeric() and str(movie['year']).isnumeric():
+            '''if str(item[3]).isnumeric() and str(movie['year']).isnumeric():
 
                 total_count += 1
                 dif_years = int(item[3]) - int(movie['year'])
-                if -5 < dif_years < 5:
-                    similar_count += 1
+                if abs(dif_years) < 10:
+                    similar_count += 1'''
 
             # SETA O RESULTADO DA SIMILARIDADE DO FILME
             result.setdefault(movie['movieId'], 0)

@@ -1,5 +1,6 @@
 from dao.MoviesDao import MoviesDao
 from logic.Calculations import Calculations
+from util.Util import Util
 from db.Connection import Connection
 import copy
 import gc
@@ -8,10 +9,10 @@ import gc
 class Recommender:
 
     @staticmethod
-    def recommender_collaborative(database_ratings, user_id, fc_number):
+    def recommender_collaborative(database_ratings, user_id, fc_number=None):
         total = {}
         sum_similarity = {}
-        print("LEN data_ratings: " + str(len(database_ratings)))
+
         # PERCORRE A LISTA DE AVALIACOES
         for target in database_ratings:
 
@@ -31,10 +32,11 @@ class Recommender:
 
                 similarity += Calculations.euclidean2(data_user, user_id, data_target)
                 count_sim += 1
-                gc.collect()
 
-            print("count_sim: " + str(count_sim))
-            similarity = similarity / count_sim'''
+            if count_sim == 0:
+                continue
+
+            similarity += similarity / count_sim'''
 
             # LOG
             # if similarity > 0:
@@ -69,16 +71,17 @@ class Recommender:
         rankings.reverse()
 
         # RETORNA LISTA DE RECOMENDAÇÃO
-        return rankings
+        if fc_number is None:
+            return rankings
+        else:
+            return fc_number[0:fc_number]
 
     @staticmethod
-    def recommender_content(database_result, user_ratings, fbc_number):
+    def recommender_content(database_result, user_ratings, fbc_number, data_movies):
 
         total = {}
-        data_movies = list(MoviesDao.get_all_movies())
 
         for movie in database_result:
-
             # REALIZA CALCULO DA SIMILARIDADE
             data_similar = Calculations.jaccard(movie, data_movies, user_ratings, fbc_number)
 

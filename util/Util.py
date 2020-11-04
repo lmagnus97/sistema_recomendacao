@@ -1,4 +1,5 @@
 from datetime import datetime
+import csv
 
 
 class Util:
@@ -25,3 +26,9 @@ class Util:
             return True
         else:
             return False
+
+    @staticmethod
+    def write_result(name, data):
+        f = open(name + '.csv', 'a')
+        f.write(data + '\n')
+        f.close()

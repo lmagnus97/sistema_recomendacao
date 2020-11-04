@@ -90,6 +90,13 @@ class Calculations:
                 if abs(dif_years) < 10:
                     similar_count += 1'''
 
+            '''if str(item[3]).isnumeric() and str(movie['year']).isnumeric():
+
+                            total_count += 1
+                            dif_years = int(item[3]) - int(movie['year'])
+                            if (int(item[3]) >= 2000 and int(movie['year']) >= 2000) or int(item[3]) < 2000 and int(movie['year']) < 2000:
+                                similar_count += 1'''
+
             # SETA O RESULTADO DA SIMILARIDADE DO FILME
             result.setdefault(movie['movieId'], 0)
             result[movie['movieId']] += similar_count / total_count

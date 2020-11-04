@@ -1,12 +1,13 @@
 from logic.Recommender import Recommender
 from dao.MoviesDao import MoviesDao
-from logic.Avaliations import Avalations
+from logic.Avaliations import Avaliations
+from util.Util import Util
 import math
 
 # PADROES
 USER_ID = '104'
-FC_NUMBER = 1000
-FBC_NUMBER = 2
+FC_NUMBER = 5000
+FBC_NUMBER = 1
 
 # RETORNA LISTA DE RECOMENDAÇÃO POR MEIO DA FILTRAGEM COLABORATIVA
 
@@ -49,6 +50,11 @@ print("\n-------------------- INICIO FILTRAGEM BASEADA EM CONTEÚDO ------------
 
 # print(str(resultFC))
 
-Avalations.realize_avaliation(database_ratings, FC_NUMBER, FBC_NUMBER)
+avaliation = Avaliations()
+print("COM CONTEXTO")
+avaliation.realize_avaliation(FC_NUMBER, FBC_NUMBER, True)
+
+print("SEM CONTEXTO")
+avaliation.realize_avaliation(FC_NUMBER, FBC_NUMBER, False)
 
 print("\n-------------------- INICIO FILTRAGEM BASEADA EM CONTEÚDO ----------------------\n")

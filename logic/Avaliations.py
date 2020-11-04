@@ -28,7 +28,8 @@ class Avaliations:
                     print(log + ": " + str(database_ratings[str(user_id)][movie[1]]) + " - " + str(
                         movie[0]) + " -> " + str(dif))'''
                 Util.write_result("relatorio_100",
-                                  str(user_id) + ";" + str(database_ratings[str(user_id)][movie[1]]) + ";" + str(
+                                  str(user_id) + ";" + log + ";" + str(
+                                      database_ratings[str(user_id)][movie[1]]) + ";" + str(
                                       movie[0]) + ";" + str(dif))
 
                 # RESULTADOS
@@ -90,7 +91,7 @@ class Avaliations:
         result_total_fbc = Result(0, 0, 0, 0)
 
         # PERCORRE CADA USUÁRIOS PARA CALCULAR OS MÉTODOS AVALIATIVOS
-        for user_id in range(1, 51):
+        for user_id in range(1, 101):
             print("AVALIANDO USUARIO: " + str(user_id))
             # GERA A RECOMENDAÇÃO POR MEIO DA FILTRAGEM COLABORATIVA PARA O USUARIO EM QUESTÃO
             result_fc = Recommender.recommender_collaborative(database_ratings, str(user_id))
@@ -112,7 +113,7 @@ class Avaliations:
             result_fc_analyze = self.incrementFC(result_hybrid, result_fc, fc_number)
 
             # CALCULA AS MÉTRICAS AVALIATIVAS PARA CADA MODELO
-            avaliation_hybrid = self.calculate_result(database_ratings, user_id, result_hybrid, "HÍBRIDO")
+            avaliation_hybrid = self.calculate_result(database_ratings, user_id, result_hybrid, "HIB")
             avaliation_fbc = self.calculate_result(database_ratings, user_id, result_fbc, "FBC")
             avaliation_fc = self.calculate_result(database_ratings, user_id, result_fc_analyze, "FC")
 

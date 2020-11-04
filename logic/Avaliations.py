@@ -27,7 +27,7 @@ class Avaliations:
                 '''if log is not None:
                     print(log + ": " + str(database_ratings[str(user_id)][movie[1]]) + " - " + str(
                         movie[0]) + " -> " + str(dif))'''
-                Util.write_result("relatorio_50",
+                Util.write_result("relatorio_100",
                                   str(user_id) + ";" + str(database_ratings[str(user_id)][movie[1]]) + ";" + str(
                                       movie[0]) + ";" + str(dif))
 
@@ -76,7 +76,7 @@ class Avaliations:
 
     def realize_avaliation(self, fc_number, fbc_number, with_context=False):
 
-        Util.write_result("relatorio_50", "user;avaliacao_real;avaliacao_gerada;diferenca")
+        Util.write_result("relatorio_100", "user;avaliacao_real;avaliacao_gerada;diferenca")
 
         # CARREGA BASE DE AVALIAÇÕES
         if with_context:

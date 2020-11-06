@@ -52,11 +52,11 @@ print("\n-------------------- INICIO FILTRAGEM BASEADA EM CONTEÚDO ------------
 
 avaliation = Avaliations()
 print("COM CONTEXTO")
-Util.write_result("relatorio_100", "COM CONTEXTO")
+Util.write_result("relatorio_50", "COM CONTEXTO")
 avaliation.realize_avaliation(FC_NUMBER, FBC_NUMBER, True)
 
 print("SEM CONTEXTO")
-Util.write_result("relatorio_100", "SEM CONTEXTO")
+Util.write_result("relatorio_50", "SEM CONTEXTO")
 avaliation.realize_avaliation(FC_NUMBER, FBC_NUMBER, False)
 
 print("\n-------------------- INICIO FILTRAGEM BASEADA EM CONTEÚDO ----------------------\n")

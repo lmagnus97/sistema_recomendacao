@@ -27,7 +27,7 @@ class Avaliations:
                 '''if log is not None:
                     print(log + ": " + str(database_ratings[str(user_id)][movie[1]]) + " - " + str(
                         movie[0]) + " -> " + str(dif))'''
-                Util.write_result("relatorio_100",
+                Util.write_result("relatorio_50",
                                   str(user_id) + ";" + log + ";" + str(
                                       database_ratings[str(user_id)][movie[1]]) + ";" + str(
                                       movie[0]) + ";" + str(dif))
@@ -77,7 +77,7 @@ class Avaliations:
 
     def realize_avaliation(self, fc_number, fbc_number, with_context=False):
 
-        Util.write_result("relatorio_100", "user;avaliacao_real;avaliacao_gerada;diferenca")
+        Util.write_result("relatorio_50", "user;avaliacao_real;avaliacao_gerada;diferenca")
 
         # CARREGA BASE DE AVALIAÇÕES
         if with_context:
@@ -91,7 +91,7 @@ class Avaliations:
         result_total_fbc = Result(0, 0, 0, 0)
 
         # PERCORRE CADA USUÁRIOS PARA CALCULAR OS MÉTODOS AVALIATIVOS
-        for user_id in range(1, 101):
+        for user_id in range(1, 11):
             print("AVALIANDO USUARIO: " + str(user_id))
             # GERA A RECOMENDAÇÃO POR MEIO DA FILTRAGEM COLABORATIVA PARA O USUARIO EM QUESTÃO
             result_fc = Recommender.recommender_collaborative(database_ratings, str(user_id))

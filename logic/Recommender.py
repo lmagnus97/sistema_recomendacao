@@ -74,7 +74,7 @@ class Recommender:
         if fc_number is None:
             return rankings
         else:
-            return fc_number[0:fc_number]
+            return rankings[0:fc_number]
 
     @staticmethod
     def recommender_content(database_result, user_ratings, fbc_number, data_movies):

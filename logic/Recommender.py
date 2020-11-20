@@ -23,21 +23,6 @@ class Recommender:
             # CALCULA SIMILARIDADE
             similarity = Calculations.euclidean(database_ratings, user_id, target)
 
-            '''similarity = 0
-            count_sim = 0
-            for movie_id in database_ratings[user_id]:
-                data_user = copy.deepcopy(database_ratings[user_id])
-                data_target = copy.deepcopy(database_ratings[target])
-                del data_user[movie_id]
-
-                similarity += Calculations.euclidean2(data_user, user_id, data_target)
-                count_sim += 1
-
-            if count_sim == 0:
-                continue
-
-            similarity += similarity / count_sim'''
-
             # LOG
             # if similarity > 0:
             # print("A SIMILARIDADE DE " + str(user_id) + " COM " + target + " É: " + str(similarity))
@@ -49,15 +34,14 @@ class Recommender:
             # PERCORRE A LISTA DE FILMES AVALIADOS PELO ALVO
             for item in database_ratings[target]:
                 # VERIFICA SE O FILME JÁ NÃO FOI VISTO PELO USUÁRIO
-                '''if item not in database[user]:'''
+                if item not in database_ratings[user_id]:
+                    # CALCULA O TOTAL
+                    total.setdefault(item, 0)
+                    total[item] += database_ratings[target][item] * similarity
 
-                # CALCULA O TOTAL
-                total.setdefault(item, 0)
-                total[item] += database_ratings[target][item] * similarity
-
-                # CALCULA A SOMA DA SIMILARIDADE
-                sum_similarity.setdefault(item, 0)
-                sum_similarity[item] += similarity
+                    # CALCULA A SOMA DA SIMILARIDADE
+                    sum_similarity.setdefault(item, 0)
+                    sum_similarity[item] += similarity
 
         # PEGA BASE DE FILMES
         base_movies = MoviesDao.get_all_movies_genres()

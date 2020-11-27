@@ -33,6 +33,19 @@ class MoviesDao:
         return col_movies.find_one({"movieId": movie_id})
 
     @staticmethod
+    def get_movie_api(movie_id):
+        # COLEÇÃO DE FILMES
+        col_movies = Connection.db()["movies"]
+        data = col_movies.find_one({"movieId": movie_id})
+
+        return {
+            "movieId": data['movieId'],
+            "title": data['title'],
+            "genres": data['genres'],
+            "year": data['year'],
+        }
+
+    @staticmethod
     def get_tags_movie(movieId):
         col_tabs = Connection.db()["tags"]
         return col_tabs.find({"movieId": movieId})
@@ -51,6 +64,11 @@ class MoviesDao:
     def get_movies_links():
         col_links = Connection.db()["links"]
         return col_links.find()
+
+    @staticmethod
+    def get_movie_link(movie_id):
+        col_links = Connection.db()["links"]
+        return col_links.find_one({'movieId': movie_id})
 
     @staticmethod
     def get_all_movies_genres():
@@ -89,3 +107,24 @@ class MoviesDao:
         col_movies = Connection.db()["ratings"]
 
         return col_movies.find({"userId": user_id})
+
+    @staticmethod
+    def get_tmdb_id(movieId):
+        col = Connection.db()["links"]
+
+        return col.find_one({"movieId": movieId})
+
+    @staticmethod
+    def get_tmdb_exist(tmdbId):
+        col = Connection.db()["links"]
+
+        return col.find_one({"tmdbId": tmdbId})
+
+    @staticmethod
+    def add_new_link(data):
+        col = Connection.db()["links"]
+
+        return col.insert({
+                'movieId': data['movieId'],
+                'tmdbId': data['tmdbId']
+            })

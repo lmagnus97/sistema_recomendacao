@@ -1,12 +1,38 @@
 from dao.MoviesDao import MoviesDao
 from logic.Calculations import Calculations
-from util.Util import Util
-from db.Connection import Connection
-import copy
-import gc
+from util.Config import Config
+import random
 
 
 class Recommender:
+
+    @staticmethod
+    def init(user_id):
+
+        # RETORNA LISTA DE RECOMENDAÇÃO POR MEIO DA FILTRAGEM COLABORATIVA
+        database_ratings = MoviesDao.get_movies(False)
+        data_movies = list(MoviesDao.get_all_movies())
+
+        if user_id not in database_ratings:
+            result = Recommender.recommender_init_random(data_movies)
+        else:
+            result = Recommender.recommender_collaborative(database_ratings, user_id, Config.fc_number)
+
+        resultFBC = Recommender.recommender_content(result, MoviesDao.get_user_ratings(str(user_id)), Config.fbc_number,
+                                                    data_movies)
+        result.extend(resultFBC)
+
+        recommendation = []
+        for movie in result:
+            data = MoviesDao.get_movie_link(movie[1])
+            recommendation.append({
+                'id': movie[1],
+                'tmdb': data['tmdbId'],
+                'imdb': data['imdbId'],
+                'rating': movie[0]
+            })
+
+        return recommendation
 
     @staticmethod
     def recommender_collaborative(database_ratings, user_id, fc_number=None):
@@ -81,4 +107,19 @@ class Recommender:
                 total[item[1]] += new_rating
 
         rankings = [(total, item) for item, total in total.items()]
+        return rankings
+
+    @staticmethod
+    def recommender_init_random(database_movies):
+        # RANDOM LIST
+        list_random = random.sample(database_movies, 15)
+
+        # PEGA BASE DE FILMES
+        base_movies = MoviesDao.get_all_movies_genres()
+
+        rankings = []
+
+        for movie in list_random:
+            rankings.append((1.0, movie['movieId'], base_movies[movie['movieId']][0], base_movies[movie['movieId']][1]))
+
         return rankings

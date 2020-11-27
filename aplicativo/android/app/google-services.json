@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "385352738720",
+    "firebase_url": "https://app-sistema-recomendacao.firebaseio.com",
+    "project_id": "app-sistema-recomendacao",
+    "storage_bucket": "app-sistema-recomendacao.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385352738720:android:4ef07dd6f2af79e770e6c5",
+        "android_client_info": {
+          "package_name": "br.com.magnus.app_system_recommender"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "385352738720-bbv7eo7vnh99lfodknha30mq61snvdhp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqUPvzTVYMr6hxiRs4Tll6L6VZgSdcQVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "385352738720-bbv7eo7vnh99lfodknha30mq61snvdhp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
